@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dharsan R | Developer Portfolio</title>
+  <link rel="stylesheet" href="starpattern.css" />
   <style>
     :root {
       --primary: #4f46e5;
@@ -43,6 +44,7 @@
       --badge-bg: rgba(34, 211, 238, 0.12);
       --btn-text: #06060a;
       color-scheme: dark;
+      background: radial-gradient(ellipse at bottom, #321b35 0%, #090a0f 100%);
     }
 
     body {
@@ -361,33 +363,70 @@
     .about-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 20px;
     }
 
     .stat-card {
+      position: relative;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      padding: 16px;
+      gap: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 150px;
     }
 
-    .stat-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow);
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      left: -6px;
+      margin: auto;
+      width: calc(100% + 12px);
+      height: calc(100% + 14px);
+      border-radius: 10px;
+      background: linear-gradient(-45deg, var(--grad1) 0%, var(--grad2) 100%);
+      z-index: -10;
+      pointer-events: none;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .stat-card::after {
+      content: "";
+      z-index: -1;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(-45deg, var(--grad1) 0%, var(--grad2) 100%);
+      transform: translate3d(0, 0, 0) scale(0.95);
+      filter: blur(20px);
     }
 
     .stat-num {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--primary);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
     }
 
     .stat-label {
-      color: var(--text-muted);
       font-size: 0.9rem;
-      margin-top: 4px;
+      color: var(--grad1);
+      font-weight: 600;
+    }
+
+    .stat-card:hover::after {
+      filter: blur(30px);
+    }
+
+    .stat-card:hover::before {
+      transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+    }
+
+    body.dark .stat-card {
+      background: rgba(13, 13, 22, 0.55);
+      backdrop-filter: blur(8px);
     }
 
     /* ---------- Skills ---------- */
@@ -630,9 +669,9 @@
       opacity: 0.9;
     }
 
-    body.dark .hire-wrap .section-title,
-    body.dark .hire-wrap .section-subtitle {
-      color: #0a0a0f;
+body.dark .hire-wrap .section-title,
+body.dark .hire-wrap .section-subtitle {
+      color: #ffffff;
     }
 
     .hire-grid {
@@ -830,6 +869,120 @@
       text-shadow: 0 0 12px #22d3ee;
     }
 
+    body.dark .hero {
+      background: transparent;
+    }
+
+    body.dark .skills-wrap {
+      background: transparent;
+    }
+
+    body.dark .hire-wrap {
+      background: transparent;
+    }
+
+    body.dark .proj-card,
+    body.dark .educ-card,
+    body.dark .exp-card,
+    body.dark .contact-card {
+      background: rgba(19, 19, 28, 0.55);
+      backdrop-filter: blur(8px);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark .tech {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* ---------- Custom gun-target cursor & click water splash ---------- */
+    body * {
+      cursor: none !important;
+    }
+
+    .reticle {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 44px;
+      height: 44px;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      transition: opacity 0.2s ease;
+    }
+
+    .reticle svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 0 6px var(--grad1));
+    }
+
+    .reticle.fired {
+      animation: recoil 0.15s ease-out;
+    }
+
+    @keyframes recoil {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(0.72); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .splash .ring {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--grad1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: splash-ring 0.65s ease-out forwards;
+      opacity: 0.9;
+    }
+
+    @keyframes splash-ring {
+      to {
+        width: 46px;
+        height: 46px;
+        opacity: 0;
+      }
+    }
+
+    .splash .drop {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--grad1) 65%);
+      transform: translate(-50%, -50%);
+      animation: splash-drop 0.7s ease-out forwards;
+    }
+
+    @keyframes splash-drop {
+      0% {
+        opacity: 0.95;
+        transform: translate(-50%, -50%);
+      }
+      70% {
+        opacity: 0.85;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)));
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx) * 0.85), calc(-50% + var(--dy) * 0.85 + 12px));
+      }
+    }
+
     /* ---------- Responsive ---------- */
     @media (max-width: 900px) {
       .hero-inner {
@@ -922,6 +1075,10 @@
   </style>
 </head>
 <body>
+
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
 
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
@@ -1276,13 +1433,7 @@
           <h4>Phone</h4>
           <a href="tel:+919787160008">+91 97871 60008</a>
         </div>
-        <div class="contact-card reveal">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <h4>Location</h4>
-          <address>Erode, Tamil Nadu</address>
-        </div>
+
         <div class="contact-card reveal">
           <div class="contact-icon">
             <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -1311,14 +1462,6 @@
   <!-- Footer -->
   <footer>
     <div class="container footer-inner">
-      <div class="footer-name">Dharsan R</div>
-      <div class="footer-title">Front-End / Software Developer · Job Seeker</div>
-      <div class="footer-socials">
-        <a href="mailto:dharsanram333@gmail.com">Email</a>
-        <a href="https://linkedin.com/in/dharsan-ram-49ba0929b" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/DHARSAN1208" target="_blank" rel="noopener">GitHub</a>
-        <a href="tel:+919787160008">Phone</a>
-      </div>
       <div class="footer-copy">© 2026 Dharsan R · All rights reserved.</div>
     </div>
   </footer>
@@ -1425,6 +1568,67 @@
     }, { threshold: 0.4 });
 
     skillBars.forEach(bar => barObserver.observe(bar));
+
+    // Custom gun-target cursor (zodiac-style reticle)
+    const reticle = document.createElement('div');
+    reticle.className = 'reticle';
+    reticle.innerHTML = `
+      <svg viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="20" stroke="var(--grad2)" stroke-width="1.4"/>
+        <circle cx="22" cy="22" r="13" stroke="var(--grad1)" stroke-width="1"/>
+        <circle cx="22" cy="22" r="6" stroke="var(--grad1)" stroke-width="1.2" stroke-dasharray="2 2"/>
+        <path d="M22 0v4.5M22 39.5v4.5M0 22h4.5M39.5 22h4.5" stroke="var(--grad2)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M42 22L39.2 22M22 2l0 2.8M2 22l2.8 0M22 42l0-2.8M22 22l3.4 3.4" stroke="var(--grad1)" stroke-width="1"/>
+        <path d="M39.3 32l-2.7-1.5M36.7 30.5l-2.4 1.3M32 39.3l-1.5-2.7M12 39.3l1.5-2.7M4.7 32l2.7-1.5M7.3 30.5l2.4 1.3M4.7 12l2.7 1.5M7.3 13.5l2.4-1.3M12 4.7l1.5 2.7M32 4.7l-1.5 2.7M39.3 12l-2.7 1.5M36.7 13.5l-2.4-1.3" stroke="var(--grad1)" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="22" cy="22" r="1.8" fill="var(--grad1)"/>
+      </svg>`;
+    document.body.appendChild(reticle);
+
+    let cursorVisible = false;
+    document.addEventListener('mousemove', (e) => {
+      reticle.style.left = e.clientX + 'px';
+      reticle.style.top = e.clientY + 'px';
+      if (!cursorVisible) {
+        cursorVisible = true;
+        reticle.style.opacity = '1';
+      }
+    });
+
+    document.addEventListener('mouseleave', () => { reticle.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { reticle.style.opacity = '1'; });
+
+    function createSplash(x, y) {
+      const splash = document.createElement('div');
+      splash.className = 'splash';
+      splash.style.left = x + 'px';
+      splash.style.top = y + 'px';
+
+      for (let i = 0; i < 6; i++) {
+        const drop = document.createElement('span');
+        drop.className = 'drop';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 20 + Math.random() * 18;
+        drop.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+        drop.style.setProperty('--dy', Math.sin(angle) * dist - dist * 0.4 + 'px');
+        drop.style.background =
+          `radial-gradient(circle at 30% 30%, #fff, ${i % 2 ? 'var(--grad1)' : 'var(--grad2)'} 65%)`;
+        splash.appendChild(drop);
+      }
+
+      const ring = document.createElement('span');
+      ring.className = 'ring';
+      splash.appendChild(ring);
+
+      document.body.appendChild(splash);
+      setTimeout(() => splash.remove(), 800);
+    }
+
+    document.addEventListener('click', (e) => {
+      createSplash(e.clientX, e.clientY);
+      reticle.classList.remove('fired');
+      void reticle.offsetWidth;
+      reticle.classList.add('fired');
+    });
   </script>
 
 </body>
